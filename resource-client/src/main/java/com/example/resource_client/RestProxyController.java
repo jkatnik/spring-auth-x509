@@ -3,6 +3,8 @@ package com.example.resource_client;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+
 @RestController
 public class RestProxyController {
   private ResourceClient resourceClient;
@@ -11,8 +13,12 @@ public class RestProxyController {
     this.resourceClient = resourceClient;
   }
 
-  @GetMapping("/call-user")
+  @GetMapping(value = "/call-user", produces = "text/plain")
   public String callUser() {
-    return resourceClient.getUser();
+    try {
+      return resourceClient.getUser();
+    } catch (Exception e) {
+      return e.getMessage() + "\r\n" + Arrays.toString(e.getStackTrace());
+    }
   }
 }
